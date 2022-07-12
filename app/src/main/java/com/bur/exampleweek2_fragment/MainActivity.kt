@@ -15,9 +15,11 @@ import com.bur.exampleweek2_fragment.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     val name = "Main Activity"
     val TAG = "LoggerApp"
-    private var logListView: ListView ?= null
-    private var myLogs: ArrayList<String> ? = null
-    private var item
+
+    lateinit var logListView: ListView
+    var myLogsList: ArrayList<String> = ArrayList()
+    lateinit var arrayAdapter: ArrayAdapter<String>
+
     lateinit var binding: ActivityMainBinding
     var firstFragment = firstFragment()   //присваиваем
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,13 +28,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         logListViewConfig()
         showFirstFragmentOnAppStart(firstFragment)
+
+        newItemInLogList("onCreate() $name")
+        Log.i(TAG, "onCreate() $name");
     }
 
     private fun logListViewConfig() {
-        val logListView = binding.logListView
-        val adapter: ArrayAdapter<String>
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, myLogs)
-        logListView.adapter = adapter
+        logListView = binding.logListView
+        arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, myLogsList)
+    }
+
+    public fun newItemInLogList(lifeCycleNotification: String) {
+        myLogsList.add(lifeCycleNotification)
+        arrayAdapter.notifyDataSetChanged()
+        logListView.adapter = arrayAdapter
     }
 
     private fun showFirstFragmentOnAppStart(fragment: Fragment) {
@@ -41,54 +50,42 @@ class MainActivity : AppCompatActivity() {
         fragmentManager.commit()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-
-        myLogs.add("onCreate() $name")
-        ad.notifyDataSetChanged();
-        Log.i(TAG, "onCreate() $name");
-        super.onCreate(savedInstanceState, persistentState)
-    }
-
     override fun onStart() {
-        Toast.makeText(getApplicationContext(), "onStart() $name", Toast.LENGTH_SHORT)
-            .show();
+        newItemInLogList("onStart() $name")
         Log.i(TAG, "onStart() $name");
         super.onStart()
     }
 
     override fun onResume() {
-        Toast.makeText(getApplicationContext(), "onResume() $name", Toast.LENGTH_SHORT)
-            .show();
+        newItemInLogList("onResume() $name")
         Log.i(TAG, "onResume() $name");
         super.onResume()
     }
 
     override fun onPause() {
-        Toast.makeText(getApplicationContext(), "onPause() $name", Toast.LENGTH_SHORT)
-            .show();
+        newItemInLogList("onPause() $name")
         Log.i(TAG, "onPause() $name");
         super.onPause()
     }
 
     override fun onRestart() {
-        Toast.makeText(getApplicationContext(), "onRestart() $name", Toast.LENGTH_SHORT)
-            .show();
+        newItemInLogList("onRestart() $name")
         Log.i(TAG, "onRestart() $name");
         super.onRestart()
     }
 
     override fun onStop() {
-        Toast.makeText(getApplicationContext(), "onStop() $name", Toast.LENGTH_SHORT).show();
+        newItemInLogList("onStop() $name")
         Log.i(TAG, "onStop() $name");
         super.onStop()
     }
 
     override fun onDestroy() {
-        Toast.makeText(getApplicationContext(), "onDestroy() $name", Toast.LENGTH_SHORT)
-            .show();
+        newItemInLogList("onDestroy() $name")
         Log.i(TAG, "onDestroy() $name");
         super.onDestroy()
     }
+
 }
 
 
