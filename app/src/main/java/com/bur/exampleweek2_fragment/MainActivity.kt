@@ -1,37 +1,50 @@
 package com.bur.exampleweek2_fragment
 
-import android.content.ContentValues.TAG
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.R
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bur.exampleweek2_fragment.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
     val name = "Main Activity"
     val TAG = "LoggerApp"
+    private var logListView: ListView ?= null
+    private var myLogs: ArrayList<String> ? = null
+    private var item
     lateinit var binding: ActivityMainBinding
     var firstFragment = firstFragment()   //присваиваем
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        logListViewConfig()
         showFirstFragmentOnAppStart(firstFragment)
+    }
+
+    private fun logListViewConfig() {
+        val logListView = binding.logListView
+        val adapter: ArrayAdapter<String>
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, myLogs)
+        logListView.adapter = adapter
     }
 
     private fun showFirstFragmentOnAppStart(fragment: Fragment) {
         val fragmentManager = supportFragmentManager.beginTransaction()
-        fragmentManager.add(R.id.fragment_container, fragment)
+        fragmentManager.add(binding.fragmentContainer.id, fragment)
         fragmentManager.commit()
     }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        Toast.makeText(getApplicationContext(), "onCreate() $name", Toast.LENGTH_SHORT)
-            .show();
+
+        myLogs.add("onCreate() $name")
+        ad.notifyDataSetChanged();
         Log.i(TAG, "onCreate() $name");
         super.onCreate(savedInstanceState, persistentState)
     }
