@@ -11,3 +11,27 @@
 2.3. Открывать-закрывать-сворачивать экраны и смотреть что в какой последовательности вызывается
 
 2.4. Посмотреть картинку про жизненный цикл Fragment в документации, выяснить все ли понятно, если что-то непонятно, надо это прояснить
+```
+Activity LifeCycle                           Fragment LifeCycle
+onCreate()                                    onAttach()
+    |                                              |
+onStart()______onRestart()                     onCreate()
+    |             |                                |
+onResume()        |                            onCreateView()
+    |             |                                |
+onPause()         |                            onActivityCreated()
+    |             |                                |
+onStop()__________|                             onStart()
+    |                                              |
+onDestroy()                                     onResume()
+                                                   |
+                                                onPause()
+                                                   |
+                                                onStop()
+                                                   |
+                                                onDestroyView()
+                                                   |
+                                                onDestroy()
+                                                   |
+                                                onDetach()
+```
